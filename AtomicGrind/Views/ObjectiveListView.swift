@@ -23,13 +23,13 @@ struct ObjectiveListView: View {
     @Query private var objectives: [Objective]
     @State private var showAddObjectiveScreen: Bool = false
     @State private var filter = ""
-    @State private var sortOrder = SortOrder.Status
+   
     
     var body: some View {
         NavigationSplitView {
             VStack {
                 
-                
+                ObjectiveList(filterString: filter)
                 
             }
 #if os(macOS)
@@ -41,7 +41,6 @@ struct ObjectiveListView: View {
                     ToolbarItem(placement: .navigationBarLeading) {
                         Button{
                             HapticManager.notification(type: .success)
-                            
                         } label: {
                             ZStack{
                                 Circle()
@@ -51,7 +50,6 @@ struct ObjectiveListView: View {
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
                                     .clipShape(.circle)
-                                
                                     .frame(width: 40 , height: 40 )
                             }
                         }
@@ -70,7 +68,7 @@ struct ObjectiveListView: View {
                                 .fontWeight(.semibold)
                                 .foregroundStyle(.white)
                                 .frame(width: 40, height: 40)
-                                .background(.blue.gradient.shadow(.drop(color: .black.opacity(0.25), radius: 5, x: 10, y: 10)), in: .circle)
+                                .background(.blue.gradient.shadow(.drop(color: .black.opacity(0.25), radius: 2, x:3, y: 10)), in: .circle)
                         }
                     }
                 }.padding(.horizontal)

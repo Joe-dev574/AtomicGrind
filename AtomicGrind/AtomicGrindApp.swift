@@ -13,7 +13,7 @@ struct AtomicGrindApp: App {
     let container: ModelContainer
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ObjectiveListView()
         }
         .modelContainer(container)
     }

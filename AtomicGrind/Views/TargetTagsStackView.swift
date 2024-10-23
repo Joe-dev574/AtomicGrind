@@ -8,11 +8,16 @@
 import SwiftUI
 
 struct TargetTagsStackView: View {
+    var targetTags: [TargetTag]
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        HStack {
+            ForEach(targetTags.sorted(using: KeyPathComparator(\TargetTag.name))) { targetTag in
+                Text(targetTag.name)
+                    .font(.caption)
+                    .foregroundStyle(.white)
+                    .padding(5)
+                    .background(RoundedRectangle(cornerRadius: 5).fill(targetTag.hexColor))
+            }
+        }
     }
-}
-
-#Preview {
-    TargetTagsStackView()
 }

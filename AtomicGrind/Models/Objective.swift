@@ -17,6 +17,7 @@ final class Objective {
     var dateCompleted: Date = Date.distantPast
     var status: Status.RawValue = Status.Active.rawValue
     var isComplete: Bool = false
+    var objectiveTint: String
     @Relationship(deleteRule: .cascade)
     var activityUpdate: [ActivityUpdate]?
     @Relationship(inverse: \TargetTag.objectives)
@@ -30,6 +31,7 @@ final class Objective {
         dateCompleted: Date = Date.distantPast,
         status: Status = .Active,
         isComplete: Bool,
+        objectiveTint: String,
         activityUpdate: [ActivityUpdate]? = nil,
         targetTags: [TargetTag]? = nil
     ) {
@@ -40,6 +42,7 @@ final class Objective {
         self.dateCompleted = dateCompleted
         self.status = status.rawValue
         self.isComplete = isComplete
+        self.objectiveTint = objectiveTint
         self.activityUpdate = activityUpdate
         self.targetTags = targetTags
     }
@@ -50,7 +53,33 @@ final class Objective {
         case .Active:
             Image(systemName: "book.fill")
         case .Completed:
-            Image(systemName: "books.vertical.fill")
+            Image(systemName: "objectives.vertical.fill")
+        }
+    }
+    var tintColor: Color {
+        switch objectiveTint {
+        case "TaskColor 1": return .taskColor1
+        case "TaskColor 2": return .taskColor2
+        case "TaskColor 3": return .taskColor3
+        case "TaskColor 4": return .taskColor4
+        case "TaskColor 5": return .taskColor5
+        case "TaskColor 6": return .taskColor6
+            case "TaskColor 7": return .taskColor7
+            case "TaskColor 8": return .taskColor8
+            case "TaskColor 9": return .taskColor9
+            case "TaskColor 10": return .taskColor10
+            case "TaskColor 11": return .taskColor11
+            case "TaskColor 12": return .taskColor12
+            case "TaskColor 13": return .taskColor13
+            case "TaskColor 14": return .taskColor14
+            case "TaskColor 15": return .taskColor15
+            case "TaskColor 16": return .taskColor16
+            case "TaskColor 17": return .taskColor17
+            case "TaskColor 18": return .taskColor18
+            case "TaskColor 19": return .taskColor19
+            case "TaskColor 20": return .taskColor20
+            case "TaskColor 21": return .taskColor21
+        default: return .black
         }
     }
 }

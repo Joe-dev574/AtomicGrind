@@ -12,15 +12,17 @@ import SwiftData
 
 
 struct AddObjectiveScreen: View {
+//MARK:  PROPERTIES
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var context
     @State private var title = ""
     @State private var summary = ""
-    
+    @State private var taskColor: String = "TaskColor 8"
     
     let columns = Array(repeating: GridItem(.fixed(50)), count: 6)
     var body: some View {
         NavigationStack {
+            //MARK: FORM
             Form{
                 VStack(alignment: .center, spacing: 7){
                     Text("Create New Objective")
@@ -109,7 +111,7 @@ struct AddObjectiveScreen: View {
 //MARK: - Private Methods -
     private func saveObjective() {
         /// Saving Task
-        let objective = Objective(title: title, summary: summary, isComplete: false)
+        let objective = Objective(title: title, summary: summary, isComplete: false, objectiveTint: taskColor)
         do {
             context.insert(objective)
             try context.save()

@@ -72,12 +72,18 @@ struct ObjectiveCardView: View {
                     }.padding(.horizontal, 10)
                     Spacer( )
                 }
+                .frame(minWidth: 0, maxWidth: .infinity,
+                       minHeight: 0, maxHeight: .infinity)
+                
                 RoundedRectangle(cornerRadius: 10)
-                    .fill(Color.gray.opacity(0.35))
-                    .frame(width: 370, height: 150)
+                    .fill(.ultraThinMaterial)
+                
+                
             }.padding(.horizontal, 1)
                 .padding(.top, 5)
+            
         }.padding(.horizontal)
+        
     }
+    
 }
-      
