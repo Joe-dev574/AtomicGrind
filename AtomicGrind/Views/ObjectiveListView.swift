@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  ObjectiveListView.swift
 //  AtomicGrind
 //
 //  Created by Joseph DeWeese on 10/20/24.
@@ -10,39 +10,27 @@ import SwiftData
 
 
 enum SortOrder: LocalizedStringResource, Identifiable, CaseIterable {
-    case status, objectiveTitle, objectiveDescription
+    case Status, Title, Summary
     
     var id: Self {
         self
     }
 }
 
-struct ContentView: View {
+struct ObjectiveListView: View {
     //MARK:  PROPERTIES
     @Environment(\.modelContext) private var modelContext
     @Query private var objectives: [Objective]
     @State private var showAddObjectiveScreen: Bool = false
     @State private var filter = ""
-    @State private var sortOrder = SortOrder.status
+    @State private var sortOrder = SortOrder.Status
     
     var body: some View {
         NavigationSplitView {
-            List{
-                Picker("", selection: $sortOrder) {
-                    ForEach(SortOrder.allCases) { sortOrder in
-                        Text("\(sortOrder.rawValue)").tag(sortOrder)
-                    }
-                }
-                .pickerStyle(.segmented)
-                .padding(.horizontal)
-                .searchable(text: $filter)
-                ForEach(objectives) { objective in
-                    NavigationLink{
-                        EditObjectiveScreen( )
-                    } label: {
-                        ObjectiveCardView( objective: objective)
-                    }
-                }
+            VStack {
+                
+                
+                
             }
 #if os(macOS)
                 .navigationSplitViewColumnWidth(min: 180, ideal: 200)
@@ -86,20 +74,25 @@ struct ContentView: View {
                         }
                     }
                 }.padding(.horizontal)
-                .sheet(isPresented: $showAddObjectiveScreen, content: {
-                    AddObjectiveScreen()
-                        .presentationDetents([.height(650)])
-                        .interactiveDismissDisabled()
-                        .presentationCornerRadius(30)
-                })
-            } detail: {
-                Text("Select an item")
-                Text("Select an item")
-            }
+                    .sheet(isPresented: $showAddObjectiveScreen, content: {
+                        AddObjectiveScreen()
+                            .presentationDetents([.height(650)])
+                            .interactiveDismissDisabled()
+                            .presentationCornerRadius(30)
+                    })
+            
+        } detail: {
+            Text("Select an item")
+            Text("Select an item")
+        }
     }
 }
-#Preview {
-    ContentView()
-        .modelContainer(for: Objective.self, inMemory: true)
+#Preview("English") {
+    let preview = Preview(Objective.self)
+    let objectives = Objective.sampleObjectives
+    let targetTags = TargetTag.sampleTargetTags
+    preview.addExamples(objectives)
+    preview.addExamples(targetTags)
+    return ObjectiveListView()
+        .modelContainer(preview.container)
 }
-
