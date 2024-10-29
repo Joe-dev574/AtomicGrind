@@ -16,22 +16,22 @@ struct LogoView: View {
                     
                     Image(systemName: "atom")
                         .resizable()
-                        .frame(width: 50, height: 45)
+                        .frame(width: 45, height: 40)
                         .foregroundColor(.blue).opacity(0.3)
                     HStack {
-                        Text("Atomic")
-                            .font(.title2)
+                        Text("My")
+                            .font(.callout)
                             .fontDesign(.serif)
                             .fontWeight(.bold)
-                            .padding(.leading, 10)
+                            
                             .foregroundColor(.blue)
                             .offset(x: 8, y: -1)
                         Text("Grind")
-                            .font(.title3)
+                            .font(.callout)
                             .fontDesign(.serif)
                             .fontWeight(.heavy)
                             .foregroundStyle(.primary)
-                        Text("7")
+                        Text("2")
                             .font(.caption)
                             .fontDesign(.serif)
                             .fontWeight(.regular)
@@ -44,6 +44,7 @@ struct LogoView: View {
                 Spacer()
                 
             }
+              
           
            
         }

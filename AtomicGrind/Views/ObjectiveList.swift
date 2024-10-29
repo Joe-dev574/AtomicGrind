@@ -12,6 +12,7 @@ import SwiftData
 
 struct ObjectiveList: View {
     @Environment(\.modelContext) private var context
+    @State private var showAddObjectiveScreen: Bool = false
     @Query private var objectives: [Objective]
     init(filterString: String) {
         let predicate = #Predicate<Objective> { objective in
@@ -24,31 +25,35 @@ struct ObjectiveList: View {
     var body: some View {
         Group {
             if objectives.isEmpty {
-                ContentUnavailableView("Enter your first objective.", systemImage: "book.fill")
+                ContentUnavailableView {
+                    Label("No Objectives Found", systemImage: "exclamationmark.triangle.fill") .foregroundStyle(.yellow)
+                } description: {
+                    Text("Begin creating your Daily Objectives.").fontDesign(.serif).font(.title3)
+                } actions: {
+                    Button("New Objective") {
+                        showAddObjectiveScreen = true
+                        HapticManager.notification(type: .success)
+                    }.buttonStyle(.borderedProminent)
+                }
+                   
+                
             } else {
                 List {
                     ForEach(objectives) { objective in
                         NavigationLink {
-                            EditObjectiveScreen()
+                            EditObjectiveScreen(objective: objective)
                         } label: {
-                            HStack(spacing: 10) {
-                                objective.icon
-                                VStack(alignment: .leading) {
-                                    Text(objective.title).font(.title2)
-                                    Text(objective.summary).foregroundStyle(.secondary)
-                                        
-                                    if let targetTags = objective.targetTags {
-                                        ViewThatFits {
-                                            TargetTagsStackView(targetTags: targetTags)
-                                            ScrollView(.horizontal, showsIndicators: false) {
-                                                TargetTagsStackView(targetTags: targetTags)
-                                            }
-                                        }
+                            ObjectiveCardView(objective: objective)
+                            
+                            if let targetTags = objective.targetTags {
+                                ViewThatFits {
+                                    TargetTagsStackView(targetTags: targetTags)
+                                    ScrollView(.horizontal, showsIndicators: false) {
+                                        TargetTagsStackView(targetTags: targetTags)
                                     }
                                 }
                             }
                         }
-                        
                     }
                     .onDelete { indexSet in
                         indexSet.forEach { index in
@@ -60,6 +65,12 @@ struct ObjectiveList: View {
                 .listStyle(.plain)
             }
         }
+        .sheet(isPresented: $showAddObjectiveScreen, content: {
+            AddObjectiveScreen()
+                .presentationDetents([.height(650)])
+                .interactiveDismissDisabled()
+                .presentationCornerRadius(30)
+        })
     }
 }
 

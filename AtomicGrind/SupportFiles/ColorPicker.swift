@@ -11,7 +11,7 @@ import SwiftData
 struct CustomColorPicker: View {
     @Environment(\.modelContext) private var context
     
-    @State private var objectiveColor: String = "TaskColor1"
+    @State private var objectiveTint: String = " "
     let columns: [GridItem] = [GridItem(.adaptive(minimum: 30, maximum: 300), spacing: nil , alignment: nil )]
     
     let colors: [String] = (1...30).compactMap { index -> String in
@@ -32,14 +32,14 @@ struct CustomColorPicker: View {
                                 .background(content: {
                                     RoundedRectangle(cornerRadius: 10 )
                                         .stroke(lineWidth: 5)
-                                        .opacity(objectiveColor == color ? 1 : 0)
+                                        .opacity(objectiveTint == color ? 1 : 0)
                                         .frame(width: 37, height: 37)
                                 })
                                 .contentShape(.rect)
                                 .onTapGesture {
                                     withAnimation(.snappy) {
                                         HapticManager.notification(type: .success)
-                                        objectiveColor = color
+                                        objectiveTint = color
                                     }
                                 }
                         }

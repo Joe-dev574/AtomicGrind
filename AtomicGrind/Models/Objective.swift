@@ -10,7 +10,7 @@ import SwiftData
 
 @Model
 final class Objective {
-    var timestamp: Date = Date.now
+    var dateAdded: Date = Date.now
     var title: String = ""
     var summary: String = ""
     var dateStarted: Date = Date.distantPast
@@ -24,7 +24,7 @@ final class Objective {
     var targetTags: [TargetTag]?
     
     init(
-        timestamp: Date = Date.now,
+        dateAdded: Date = Date.now,
         title: String = "",
         summary: String = "",
         dateStarted: Date = Date .distantPast,
@@ -35,7 +35,7 @@ final class Objective {
         activityUpdate: [ActivityUpdate]? = nil,
         targetTags: [TargetTag]? = nil
     ) {
-        self.timestamp = timestamp
+        self.dateAdded = dateAdded
         self.title = title
         self.summary = summary
         self.dateStarted = dateStarted
@@ -49,21 +49,22 @@ final class Objective {
     var icon: Image {
         switch Status(rawValue: status)! {
         case .Queue:
-            Image(systemName: "checkmark.diamond.fill")
+            Image(systemName: "pause.circle")
+               
         case .Active:
-            Image(systemName: "book.fill")
+            Image(systemName: "play.circle")
         case .Completed:
-            Image(systemName: "objectives.vertical.fill")
+            Image(systemName: "stop.circle")
         }
     }
     var tintColor: Color {
         switch objectiveTint {
-        case "TaskColor 1": return .taskColor1
-        case "TaskColor 2": return .taskColor2
-        case "TaskColor 3": return .taskColor3
-        case "TaskColor 4": return .taskColor4
-        case "TaskColor 5": return .taskColor5
-        case "TaskColor 6": return .taskColor6
+            case "TaskColor 1": return .taskColor1
+            case "TaskColor 2": return .taskColor2
+            case "TaskColor 3": return .taskColor3
+            case "TaskColor 4": return .taskColor4
+            case "TaskColor 5": return .taskColor5
+            case "TaskColor 6": return .taskColor6
             case "TaskColor 7": return .taskColor7
             case "TaskColor 8": return .taskColor8
             case "TaskColor 9": return .taskColor9

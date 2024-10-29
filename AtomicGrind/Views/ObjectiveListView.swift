@@ -26,17 +26,17 @@ struct ObjectiveListView: View {
    
     
     var body: some View {
-        NavigationSplitView {
+        NavigationStack{
             VStack {
                 
                 ObjectiveList(filterString: filter)
                 
             }
-#if os(macOS)
-                .navigationSplitViewColumnWidth(min: 180, ideal: 200)
-#endif
+
+         
+
                 .toolbar {
-#if os(iOS)
+
                     ///profile pic button
                     ToolbarItem(placement: .navigationBarLeading) {
                         Button{
@@ -57,7 +57,7 @@ struct ObjectiveListView: View {
                     ToolbarItem(placement: .principal) {
                         LogoView()
                     }
-#endif
+
                     ///add objective
                     ToolbarItem {
                         Button{
@@ -68,7 +68,7 @@ struct ObjectiveListView: View {
                                 .fontWeight(.semibold)
                                 .foregroundStyle(.white)
                                 .frame(width: 40, height: 40)
-                                .background(.blue.gradient.shadow(.drop(color: .black.opacity(0.25), radius: 2, x:3, y: 10)), in: .circle)
+                                .background(.blue.gradient.shadow(.drop(color: .black.opacity(0.55), radius: 2, x:2, y: 2)), in: .circle)
                         }
                     }
                 }.padding(.horizontal)
@@ -79,10 +79,7 @@ struct ObjectiveListView: View {
                             .presentationCornerRadius(30)
                     })
             
-        } detail: {
-            Text("Select an item")
-            Text("Select an item")
-        }
+        } 
     }
 }
 #Preview("English") {

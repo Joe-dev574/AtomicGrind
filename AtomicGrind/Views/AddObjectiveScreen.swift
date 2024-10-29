@@ -9,8 +9,6 @@ import SwiftUI
 import SwiftData
 
 
-
-
 struct AddObjectiveScreen: View {
 //MARK:  PROPERTIES
     @Environment(\.dismiss) private var dismiss
