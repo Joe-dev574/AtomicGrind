@@ -13,6 +13,7 @@ import SwiftData
 struct ObjectiveList: View {
     @Environment(\.modelContext) private var context
     @State private var showAddObjectiveScreen: Bool = false
+    @State private var showEditObjectiveScreen: Bool = false
     @Query private var objectives: [Objective]
     init(filterString: String) {
         let predicate = #Predicate<Objective> { objective in
@@ -23,48 +24,52 @@ struct ObjectiveList: View {
         _objectives = Query(filter: predicate)
     }
     var body: some View {
-        Group {
-            if objectives.isEmpty {
-                ContentUnavailableView {
-                    Label("No Objectives Found", systemImage: "exclamationmark.triangle.fill") .foregroundStyle(.yellow)
-                } description: {
-                    Text("Begin creating your Daily Objectives.").fontDesign(.serif).font(.title3)
-                } actions: {
-                    Button("New Objective") {
-                        showAddObjectiveScreen = true
-                        HapticManager.notification(type: .success)
-                    }.buttonStyle(.borderedProminent)
-                }
-                   
-                
-            } else {
-                List {
-                    ForEach(objectives) { objective in
-                        NavigationLink {
-                            EditObjectiveScreen(objective: objective)
-                        } label: {
-                            ObjectiveCardView(objective: objective)
-                        }
+        NavigationStack{
+            Group{
+                if objectives.isEmpty {
+                    ContentUnavailableView {
+                        Label("No Objectives Found", systemImage: "exclamationmark.triangle.fill") .foregroundStyle(.yellow)
+                    } description: {
+                        Text("Begin creating your Daily Objectives.").fontDesign(.serif).font(.title3)
+                    } actions: {
+                        Button("New Objective") {
+                            showAddObjectiveScreen = true
+                            HapticManager.notification(type: .success)
+                        }.buttonStyle(.borderedProminent)
                     }
-                    .onDelete { indexSet in
-                        indexSet.forEach { index in
-                            let objective = objectives[index]
-                            context.delete(objective)
+                } else {
+                    List {
+                        ForEach(objectives) { objective in
+                            NavigationLink {
+                                ObjectiveTaskScreen()
+                            } label: {
+                                ObjectiveCardView(objective: objective)
+                            }
+                            .fontDesign(.serif)
                         }
+                        .onDelete { indexSet in
+                            indexSet.forEach { index in
+                                let objective = objectives[index]
+                                context.delete(objective)
+                            }
+                            
+                        }
+                        
+                        
                     }
+                    .listStyle(.plain)
+                    .sheet(isPresented: $showAddObjectiveScreen, content: {
+                        AddObjectiveScreen()
+                            .presentationDetents([.height(400)])
+                            .interactiveDismissDisabled()
+                            .presentationCornerRadius(30)
+                    })
                 }
-                .listStyle(.plain)
             }
+            
         }
-        .sheet(isPresented: $showAddObjectiveScreen, content: {
-            AddObjectiveScreen()
-                .presentationDetents([.height(450)])
-                .interactiveDismissDisabled()
-                .presentationCornerRadius(30)
-        })
     }
 }
-
 #Preview {
     let preview = Preview(Objective.self)
     preview.addExamples(Objective.sampleObjectives)

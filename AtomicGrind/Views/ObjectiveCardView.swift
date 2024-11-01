@@ -26,7 +26,7 @@ struct ObjectiveCardView: View {
                             .frame(height: 30)
                         ZStack{
                             RoundedRectangle(cornerRadius: 7)
-                                .fill(.darkBlue)
+                                .fill(.ultraThickMaterial)
                                 .frame(height: 30)
                             RoundedRectangle(cornerRadius: 7)
                                 .fill(.backgroundGray)
