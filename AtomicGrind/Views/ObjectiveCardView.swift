@@ -32,9 +32,21 @@ struct ObjectiveCardView: View {
                                 .fill(.backgroundGray)
                                 .opacity(0.55)
                                 .frame(height: 35)
+                            if let targetTags = objective.targetTags {
+                                ViewThatFits {
+                                    TargetTagsStackView(targetTags: targetTags)
+                                    ScrollView(.horizontal, showsIndicators: false) {
+                                        TargetTagsStackView(targetTags: targetTags)
+                                    }
+                                }
+                            }
+                           
                         }
                         .foregroundStyle(.primary)
+                     
                     }
+                 
+                    Spacer( )
                 }
                 //MARK:  MAIN BODY OF CARD
                 HStack{
@@ -74,4 +86,6 @@ struct ObjectiveCardView: View {
                    minHeight: 0, maxHeight: .infinity)
         }
     }
-
+#Preview {
+   ObjectiveListView( )
+}

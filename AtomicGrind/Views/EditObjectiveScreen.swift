@@ -7,7 +7,7 @@
 
 import SwiftUI
 import PhotosUI
-
+import SwiftData
 
 
 
@@ -29,11 +29,9 @@ struct EditObjectiveScreen: View {
     }
     var body: some View {
         NavigationStack{
-            ScrollView{
                 VStack {
                     //MARK:  STATUS PICKER
                     Text("Dash Controls")
-                        .ubuntu(18, .bold)
                         .foregroundStyle(.taskColor25)
                      
                     HStack {
@@ -41,16 +39,16 @@ struct EditObjectiveScreen: View {
                             ForEach(Status.allCases) { status in
                                 Text(status.descr).tag(status)
                             }
-                        }.background(.thinMaterial.shadow(.drop(color: .black.opacity(0.55), radius: 5)), in: .rect(cornerRadius: 10))
+                        }.background(.thinMaterial.shadow(.drop(color: .black.opacity(0.95), radius: 4)), in: .rect(cornerRadius: 10))
                             .pickerStyle(.menu)
                             .buttonStyle(.bordered)
                         //MARK:  TARGETS / TAGS
-                        Button("Tags", systemImage: "target") {
+                        Button("Scope", systemImage: "scope") {
                             showTargetTags.toggle()
                         }
-                        .background(.thinMaterial.shadow(.drop(color: .black.opacity(0.55), radius: 5)), in: .rect(cornerRadius: 10))
+                        .background(.thinMaterial.shadow(.drop(color: .black.opacity(0.95), radius: 4)), in: .rect(cornerRadius: 10))
                         .sheet(isPresented: $showTargetTags) {
-                            TargetTagView()
+                            TargetTagView(objective: objective)
                         }
                         //MARK:  UPDATE BUTTON
                         NavigationLink {
@@ -58,38 +56,33 @@ struct EditObjectiveScreen: View {
                         } label: {
                             let count = objective.activityUpdate?.count ?? 0
                             Label("\(count) Updates", systemImage: "square.and.pencil").fontDesign(.serif)
-                        }.background(.thinMaterial.shadow(.drop(color: .black.opacity(0.65), radius: 5)), in: .rect(cornerRadius: 10))
-                            .ubuntu(17, .regular)
-                    }.background(.thinMaterial.shadow(.drop(color: .black.opacity(0.55), radius: 3)), in: .rect(cornerRadius: 7))
-                        .ubuntu(17, .bold)
+                        }.background(.thinMaterial.shadow(.drop(color: .black.opacity(0.95), radius: 4)), in: .rect(cornerRadius: 10))
+                           
+                    }.background(.thinMaterial.shadow(.drop(color: .black.opacity(0.55), radius: 4)), in: .rect(cornerRadius: 7))
                         .buttonStyle(.bordered)
                         .padding(.horizontal, 7)
                     Divider()
-                        .background(.thinMaterial.shadow(.drop(color: .black.opacity(0.55), radius: 3)), in: .rect(cornerRadius: 10))
+                        .background(.thinMaterial.shadow(.drop(color: .black.opacity(0.65), radius: 3)), in: .rect(cornerRadius: 10))
                         .padding(10)
                     VStack(alignment: .center, spacing: 7){
                         ///title
                         Text("Objective Title")
-                            .ubuntu(15, .bold)
-                            .foregroundStyle(.blue)
+                            .foregroundStyle(.taskColor25)
                             .padding(.bottom, 4)
                         TextField("Objective Title", text:$title)
                             .padding()
-                            .ubuntu(15, .bold)
                             .foregroundStyle(.primary)
-                            .background(.thinMaterial.shadow(.drop(color: .black.opacity(0.55), radius: 3)), in: .rect(cornerRadius: 10))
+                            .background(.thinMaterial.shadow(.drop(color: .black.opacity(0.65), radius: 3)), in: .rect(cornerRadius: 10))
                             .padding(.horizontal)
                             .padding(.bottom, 10)
                         ///description
                         Text("Brief Description")
-                            .ubuntu(15, .bold)
-                            .foregroundStyle(.blue)
+                            .foregroundStyle(.taskColor25)
                         TextEditor(text: $summary)
                             .multilineTextAlignment(.leading)
                             .lineLimit(3)
-                            .ubuntu(15, .bold)
                             .foregroundStyle(.primary)
-                            .background(.thinMaterial.shadow(.drop(color: .black.opacity(0.55), radius: 3)), in: .rect(cornerRadius: 10))
+                            .background(.thinMaterial.shadow(.drop(color: .black.opacity(0.65), radius: 4)), in: .rect(cornerRadius: 7))
                             .frame(minWidth: 365, maxWidth: .infinity, minHeight: 55, maxHeight: .infinity, alignment: .leading)
                             .padding(.bottom, 10)
                         /// Giving Some Space for tapping
@@ -111,7 +104,7 @@ struct EditObjectiveScreen: View {
                                 }
                                 
                             } label: {
-                                Text("Date Added") .ubuntu(15, .bold)
+                                Text("Date Added")
                             }
                             if status == .Active || status == .Completed {
                                 LabeledContent {
@@ -119,7 +112,7 @@ struct EditObjectiveScreen: View {
                                         .datePickerStyle(.compact)
                                         .scaleEffect(0.9, anchor: .leading)
                                 } label: {
-                                    Text("Date Started") .ubuntu(15, .bold)
+                                    Text("Date Started")
                                 }
                             }
                             if status == .Completed {
@@ -130,32 +123,48 @@ struct EditObjectiveScreen: View {
                                         .scaleEffect(0.9, anchor: .leading)
                                 } label: {
                                     Text("Date Completed")
-                                        .ubuntu(15, .bold)
+                                       
                                 }
                             }
                         }
+                        .onChange(of: status) { oldValue, newValue in
+                            if newValue == .Queue {
+                                dateStarted = Date.distantPast
+                                dateCompleted = Date.distantPast
+                            } else if newValue == .Active && oldValue == .Completed {
+                                // from completed to inProgress
+                                dateCompleted = Date.distantPast
+                            } else if newValue == .Active && oldValue == .Queue {
+                                // Book has been started
+                                dateStarted = Date.now
+                            } else if newValue == .Completed && oldValue == .Queue {
+                                // Forgot to start objective
+                                dateCompleted = Date.now
+                                dateStarted = dateAdded
+                            } else {
+                                // completed
+                                dateCompleted = Date.now
+                            }
+                        }
                         //MARK:  CUSTOM COLOR PICKER (OBJECTIVE COLOR)
-                        Text("Objective Color")
-                            .ubuntu(15, .bold)
-                            .foregroundStyle(.blue)
-                            .background(.background.shadow(.drop(color: .black.opacity(0.25), radius: 8)), in: .rect(cornerRadius: 10))
-                            .padding()
-                        Spacer( )
+                       
+                       
                         /// Giving Some Space for tapping
                             .padding(.horizontal)
-                            .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color(uiColor: .tertiarySystemFill), lineWidth: 2))
+                           
                         if let targetTags = objective.targetTags {
                             ViewThatFits {
                                 TargetTagsStackView(targetTags: targetTags)
                                 ScrollView(.horizontal, showsIndicators: false) {
                                     TargetTagsStackView(targetTags: targetTags)
                                 }
-                            }  .ubuntu(15, .bold)
+                            }
+                            .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color(uiColor: .tertiarySystemFill), lineWidth: 2))
                         }
-                        Spacer( )
                     }
                     .padding()
-                    .navigationBarTitle(objective.title, displayMode: .inline)
+                    .navigationBarTitle("Edit Folder")
+                    .navigationBarTitleDisplayMode(.inline)
                     if changed {
                         Button{
                             HapticManager.notification(type: .success)
@@ -167,7 +176,7 @@ struct EditObjectiveScreen: View {
                             objective.dateCompleted = dateCompleted
                             dismiss()
                         }  label: {
-                            VStack{
+                            
                                 ZStack{
                                     RoundedRectangle(cornerRadius: 10).stroke(style: StrokeStyle(lineWidth: 1))
                                      
@@ -176,10 +185,10 @@ struct EditObjectiveScreen: View {
                                         .fontWeight(.bold)
                                         .foregroundStyle(.white)
                                 }
-                            }
+                            
                         }.frame(width: 300, height: 45)
                             .buttonStyle(.borderedProminent)
-                            .ubuntu(15, .bold)
+                           
                     }
                 }.padding(.top, 15)
                     .onAppear {
@@ -188,7 +197,7 @@ struct EditObjectiveScreen: View {
                         dateAdded = objective.dateAdded
                         dateStarted = objective.dateStarted
                         dateCompleted = objective.dateCompleted
-                        status = Status(rawValue: objective.status)!
+                      
                         
                     }
                 var changed: Bool {
@@ -200,7 +209,7 @@ struct EditObjectiveScreen: View {
                     || dateCompleted != objective.dateCompleted
                     
                 }
-            }
+            
         }
     }
 }

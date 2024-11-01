@@ -19,7 +19,7 @@ struct LogoView: View {
                         .frame(width: 45, height: 40)
                         .foregroundColor(.blue).opacity(0.3)
                     HStack {
-                        Text("My")
+                        Text("Atomic")
                             .font(.callout)
                             .fontDesign(.serif)
                             .fontWeight(.bold)

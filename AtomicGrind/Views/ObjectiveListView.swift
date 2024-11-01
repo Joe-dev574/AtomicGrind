@@ -72,14 +72,13 @@ struct ObjectiveListView: View {
                         }
                     }
                 }.padding(.horizontal)
-                    .sheet(isPresented: $showAddObjectiveScreen, content: {
-                        AddObjectiveScreen()
-                            .presentationDetents([.height(650)])
+                .sheet(isPresented: $showAddObjectiveScreen){
+                    AddObjectiveScreen()
+                }
+                .presentationDetents(.init([.medium]))
                             .interactiveDismissDisabled()
                             .presentationCornerRadius(30)
-                    })
-            
-        } 
+        }
     }
 }
 #Preview("English") {

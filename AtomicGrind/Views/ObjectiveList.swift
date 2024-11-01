@@ -44,15 +44,6 @@ struct ObjectiveList: View {
                             EditObjectiveScreen(objective: objective)
                         } label: {
                             ObjectiveCardView(objective: objective)
-                            
-                            if let targetTags = objective.targetTags {
-                                ViewThatFits {
-                                    TargetTagsStackView(targetTags: targetTags)
-                                    ScrollView(.horizontal, showsIndicators: false) {
-                                        TargetTagsStackView(targetTags: targetTags)
-                                    }
-                                }
-                            }
                         }
                     }
                     .onDelete { indexSet in
@@ -67,7 +58,7 @@ struct ObjectiveList: View {
         }
         .sheet(isPresented: $showAddObjectiveScreen, content: {
             AddObjectiveScreen()
-                .presentationDetents([.height(650)])
+                .presentationDetents([.height(450)])
                 .interactiveDismissDisabled()
                 .presentationCornerRadius(30)
         })

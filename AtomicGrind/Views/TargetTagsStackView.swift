@@ -14,7 +14,7 @@ struct TargetTagsStackView: View {
             ForEach(targetTags.sorted(using: KeyPathComparator(\TargetTag.name))) { targetTag in
                 Text(targetTag.name)
                     .font(.caption)
-                    .foregroundStyle(.cyan)
+                    .foregroundStyle(.white)
                     .padding(5)
                     .background(RoundedRectangle(cornerRadius: 5).fill(targetTag.hexColor))
             }
