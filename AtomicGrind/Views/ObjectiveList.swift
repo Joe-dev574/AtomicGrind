@@ -5,10 +5,11 @@
 //  Created by Joseph DeWeese on 10/22/24.
 //
 
-import SwiftUI
 
 import SwiftUI
 import SwiftData
+
+
 
 struct ObjectiveList: View {
     @Environment(\.modelContext) private var context
@@ -24,8 +25,7 @@ struct ObjectiveList: View {
         _objectives = Query(filter: predicate)
     }
     var body: some View {
-        NavigationStack{
-            Group{
+   
                 if objectives.isEmpty {
                     ContentUnavailableView {
                         Label("No Objectives Found", systemImage: "exclamationmark.triangle.fill") .foregroundStyle(.yellow)
@@ -40,22 +40,20 @@ struct ObjectiveList: View {
                 } else {
                     List {
                         ForEach(objectives) { objective in
-                            NavigationLink {
-                                ObjectiveTaskScreen()
-                            } label: {
-                                ObjectiveCardView(objective: objective)
+                    
+                                NavigationLink {
+                                    EditObjectiveScreen(objective: objective)
+                                } label: {
+                                    ObjectiveCardView(objective: objective)
+                                }
+                                .listRowSeparator(.hidden)
                             }
-                            .fontDesign(.serif)
-                        }
                         .onDelete { indexSet in
                             indexSet.forEach { index in
                                 let objective = objectives[index]
                                 context.delete(objective)
                             }
-                            
                         }
-                        
-                        
                     }
                     .listStyle(.plain)
                     .sheet(isPresented: $showAddObjectiveScreen, content: {
@@ -66,11 +64,8 @@ struct ObjectiveList: View {
                     })
                 }
             }
-            
         }
-    }
-}
-#Preview {
+    #Preview {
     let preview = Preview(Objective.self)
     preview.addExamples(Objective.sampleObjectives)
     return NavigationStack {

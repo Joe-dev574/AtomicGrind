@@ -28,59 +28,52 @@ struct ObjectiveListView: View {
     var body: some View {
         NavigationStack{
             VStack {
-                
                 ObjectiveList(filterString: filter)
-                
             }
-
-         
-
-                .toolbar {
-
-                    ///profile pic button
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button{
-                            HapticManager.notification(type: .success)
-                        } label: {
-                            ZStack{
-                                Circle()
-                                    .fill(.blue)
-                                    .frame(width: 44 , height: 44)
-                                Image("profileLogo2")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .clipShape(.circle)
-                                    .frame(width: 40 , height: 40 )
-                            }
+            .toolbar {
+                ///profile pic button
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button{
+                        HapticManager.notification(type: .success)
+                    } label: {
+                        ZStack{
+                            Circle()
+                                .fill(.blue)
+                                .frame(width: 44 , height: 44)
+                            Image("profileLogo2")
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .clipShape(.circle)
+                                .frame(width: 40 , height: 40 )
                         }
                     }
-                    ToolbarItem(placement: .principal) {
-                        LogoView()
-                    }
-
-                    ///add objective
-                    ToolbarItem {
-                        Button{
-                            showAddObjectiveScreen.toggle()
-                            HapticManager.notification(type: .success)
-                        } label: {
-                            Image(systemName: "plus")
-                                .fontWeight(.semibold)
-                                .foregroundStyle(.white)
-                                .frame(width: 40, height: 40)
-                                .background(.blue.gradient.shadow(.drop(color: .black.opacity(0.55), radius: 2, x:2, y: 2)), in: .circle)
-                        }
-                    }
-                }.padding(.horizontal)
+                }
+                ToolbarItem(placement: .principal) {
+                    LogoView()
+                }
+                ///add objective
+                ToolbarItem {
+                    Button{
+                        showAddObjectiveScreen.toggle()
+                        HapticManager.notification(type: .success)
+                    } label: {
+                        Image(systemName: "plus")
+                            .fontWeight(.semibold)
+                            .foregroundStyle(.white)
+                            .frame(width: 40, height: 40)
+                            .background(.blue.gradient.shadow(.drop(color: .black.opacity(0.55), radius: 2, x:2, y: 2)), in: .circle)
+                    }.padding(.bottom, 5)
+                }
+            }.padding(.horizontal)
                 .sheet(isPresented: $showAddObjectiveScreen){
                     AddObjectiveScreen()
                 }
                 .presentationDetents(.init([.medium]))
-                            .interactiveDismissDisabled()
-                            .presentationCornerRadius(30)
+                .presentationCornerRadius(30)
         }
     }
-}
+    }
+//}
 #Preview("English") {
     let preview = Preview(Objective.self)
     let objectives = Objective.sampleObjectives
