@@ -16,6 +16,7 @@ struct EditObjectiveScreen: View {
     let objective: Objective
     
     @State private var status = Status.Queue
+ 
     @State private var title = ""
     @State private var objectiveColor = Color.accentColor
     @State private var summary = ""
@@ -53,9 +54,9 @@ struct EditObjectiveScreen: View {
                         }
                         //MARK:  UPDATE BUTTON
                         NavigationLink {
-                            UpdatesListView()
+                            UpdatesListView(objective: objective)
                         } label: {
-                            let count = objective.activityUpdate?.count ?? 0
+                            let count = objective.updates?.count ?? 0
                             Label("\(count) Updates", systemImage: "square.and.pencil").fontDesign(.serif)
                         }.background(.thinMaterial.shadow(.drop(color: .black.opacity(0.95), radius: 4)), in: .rect(cornerRadius: 10))
                         
@@ -85,7 +86,7 @@ struct EditObjectiveScreen: View {
                                 .lineLimit(3)
                                 .foregroundStyle(.primary)
                                 .background(.thinMaterial.shadow(.drop(color: .black.opacity(0.65), radius: 4)), in: .rect(cornerRadius: 7))
-                                .frame(minWidth: 365, maxWidth: .infinity, minHeight: 55, maxHeight: .infinity, alignment: .leading)
+                                .frame(minWidth: 365, maxWidth: .infinity, minHeight: 85, maxHeight: .infinity, alignment: .leading)
                                 .padding(.bottom, 10)
                             /// Giving Some Space for tapping
                                 .padding(.horizontal)
@@ -166,7 +167,7 @@ struct EditObjectiveScreen: View {
                             }
                         }
                         .padding()
-                        .navigationBarTitle("Edit Folder")
+                        .navigationBarTitle("Edit Objective Folder")
                         .navigationBarTitleDisplayMode(.inline)
                     }
                     if changed {

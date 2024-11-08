@@ -9,13 +9,6 @@ import SwiftUI
 import SwiftData
 
 
-enum SortOrder: LocalizedStringResource, Identifiable, CaseIterable {
-    case Status, Title, Summary
-    
-    var id: Self {
-        self
-    }
-}
 
 struct ObjectiveListView: View {
     //MARK:  PROPERTIES
@@ -23,13 +16,16 @@ struct ObjectiveListView: View {
     @Query private var objectives: [Objective]
     @State private var showAddObjectiveScreen: Bool = false
     @State private var filter = ""
-   
-    
+  
     var body: some View {
+       
         NavigationStack{
             VStack {
+                //MARK:  OBJECTIVE LIST
                 ObjectiveList(filterString: filter)
+              
             }
+       
             .toolbar {
                 ///profile pic button
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -51,6 +47,7 @@ struct ObjectiveListView: View {
                 ToolbarItem(placement: .principal) {
                     LogoView()
                 }
+                
                 ///add objective
                 ToolbarItem {
                     Button{
@@ -71,6 +68,7 @@ struct ObjectiveListView: View {
                 .presentationDetents(.init([.medium]))
                 .presentationCornerRadius(30)
         }
+        .searchable(text: $filter, prompt: Text("Search with Title or Description"))
     }
     }
 //}

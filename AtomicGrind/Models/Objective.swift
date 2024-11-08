@@ -19,10 +19,11 @@ final class Objective {
     var isComplete: Bool = false
     var objectiveTint: String
     @Relationship(deleteRule: .cascade)
-    var activityUpdate: [ActivityUpdate]?
+    var updates: [Update]?
     @Relationship(inverse: \TargetTag.objectives)
     var targetTags: [TargetTag]?
-    
+//    @Relationship(deleteRule: .cascade)
+//    var tasks: [Task]?
     init(
         dateAdded: Date = Date.now,
         title: String = "",
@@ -32,7 +33,6 @@ final class Objective {
         status: Status = .Active,
         isComplete: Bool,
         objectiveTint: String,
-        activityUpdate: [ActivityUpdate]? = nil,
         targetTags: [TargetTag]? = nil
     ) {
         self.dateAdded = dateAdded
@@ -43,7 +43,6 @@ final class Objective {
         self.status = status.rawValue
         self.isComplete = isComplete
         self.objectiveTint = objectiveTint
-        self.activityUpdate = activityUpdate
         self.targetTags = targetTags
     }
     var icon: Image {

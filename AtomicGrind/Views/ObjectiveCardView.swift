@@ -18,7 +18,8 @@ struct ObjectiveCardView: View {
         NavigationStack{
             ZStack {
                 RoundedRectangle(cornerRadius: 7)
-                    .fill(.ultraThickMaterial)
+                    .fill(.ultraThinMaterial.opacity(.greatestFiniteMagnitude))
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 VStack(alignment: .leading){
                     HStack{
                         ZStack {
@@ -26,7 +27,7 @@ struct ObjectiveCardView: View {
                                 .fill(.ultraThinMaterial)
                                 .frame(height: 30)
                         }
-                        Spacer( )
+                     
                     }
                     //MARK:  MAIN BODY OF CARD
                     HStack{
@@ -60,6 +61,18 @@ struct ObjectiveCardView: View {
                                     .foregroundColor(.secondary)
                             }.padding(.top, 5)
                                 .padding(.bottom, 3)
+                            HStack {
+                                //MARK:  DATE CREATED DATA LINE
+                                Text("Date Started: ")
+                                    .ubuntu(12, .bold)
+                                    .foregroundStyle(.teal)
+                                Image(systemName: "calendar.badge.clock")
+                                    .font(.caption)
+                                    .foregroundStyle(.teal)
+                                Text(objective.dateStarted.formatted(.dateTime))
+                                    .ubuntu(12, .bold)
+                                    .foregroundStyle(.teal)
+                            }.padding(.bottom, 5)
                             if let targetTags = objective.targetTags {
                                 ViewThatFits {
                                     TargetTagsStackView(targetTags: targetTags)
@@ -70,10 +83,10 @@ struct ObjectiveCardView: View {
                             }
                         }
                     }
-                    .padding(.horizontal,2)
+                  
                 }
             }
+          
         }
     }
-    
 }
